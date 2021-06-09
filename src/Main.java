@@ -6,7 +6,7 @@ public class Main {
         Scanner in = new Scanner(System.in);
         tasks = new ArrayList<>(); /* amogus */
 
-        String selection;
+        String selection = "";
 
         System.out.println("TODO:");
 
@@ -21,7 +21,8 @@ public class Main {
                     newItem();
                 } else if (selection.equalsIgnoreCase("E")) {
                     System.out.println("Edit Item");
-                    System.out.print("Please enter the index of the item you wish to edit. ");
+                    System.out.print("Please enter the index of the item you wish to edit, or input a number less " +
+                            "than 0: ");
                     if (in.hasNextInt()) {
                         editItem(in.nextInt());
                     } else {
@@ -29,7 +30,8 @@ public class Main {
                     }
                 } else if (selection.equalsIgnoreCase("D")) {
                     System.out.println("Delete Item");
-                    System.out.print("Please enter the index of the item you wish to delete. ");
+                    System.out.print("Please enter the index of the item you wish to delete, or input a number less " +
+                            "than 0: ");
                     if (in.hasNextInt()) {
                         deleteItem(in.nextInt());
                     } else {
@@ -58,14 +60,14 @@ public class Main {
     private static void newItem() {
         // initialize new instance of item with name, desc, and date
         Scanner in = new Scanner(System.in);
-        String name, desc, date;
+        String name, desc, date = "";
 
         System.out.print("Please enter the name of the item: ");
-        name = in.next();
+        name = in.nextLine();
         System.out.print("Please enter the description of the item: ");
-        desc = in.next();
+        desc = in.nextLine();
         System.out.printf("Please enter the due date of %s: ", name);
-        date = in.next();
+        date = in.nextLine();
 
         tasks.add(new Item(name, desc, date));
 
@@ -78,12 +80,14 @@ public class Main {
         if array size > 0, array.get(num-1).set<whatever>(newString)
          */
         Scanner in = new Scanner(System.in);
-        String selection;
-        
+        String selection = "";
+
         if (tasks.size() == 0) {
             System.out.println("There is nothing to edit. Please add items.");
-        } else if (pos < 0 || pos > tasks.size() + 1) {
+        } else if (pos > tasks.size() + 1) {
             System.out.println("Chosen index is out of bounds.");
+        } else if (pos < 0) {
+            System.out.println("Exiting delete mode.");
         } else {
             System.out.print("Press 1 for name, 2 for description, or 3 for due date: ");
             while (true) {
@@ -91,15 +95,15 @@ public class Main {
                     selection = in.next();
                     if (selection.equalsIgnoreCase("1")) {
                         System.out.print("Enter new name: ");
-                        tasks.get(pos-1).setName(in.next());
+                        tasks.get(pos-1).setName(in.nextLine());
                         break;
                     } else if (selection.equalsIgnoreCase("2")) {
                         System.out.print("Enter new description: ");
-                        tasks.get(pos-1).setDesc(in.next());
+                        tasks.get(pos-1).setDesc(in.nextLine());
                         break;
                     } else if (selection.equalsIgnoreCase("3")) {
                         System.out.print("Enter new due date: ");
-                        tasks.get(pos-1).setDueDate(in.next());
+                        tasks.get(pos-1).setDueDate(in.nextLine());
                         break;
                     } else {
                         System.out.print("Press 1 for name, 2 for description, or 3 for due date: ");
@@ -116,8 +120,10 @@ public class Main {
 
         if (tasks.size() == 0) {
             System.out.println("There is nothing to delete. Please add items.");
-        } else if (pos < 0 || pos > tasks.size() + 1) { // +1 or -1
+        } else if (pos > tasks.size() + 1) { // +1 or -1
             System.out.println("Chosen index is out of bounds.");
+        } else if (pos < 0) {
+            System.out.println("Exiting delete mode.");
         } else {
             tasks.remove(pos - 1);
             System.out.printf("Deleted item %d.%n", pos);
